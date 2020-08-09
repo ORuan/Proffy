@@ -17,7 +17,8 @@ export default class ClassesController{
         const week_day = filters.week_day as string;
         const subject = filters.subject as string;
         const time = filters.time as string;
-
+        
+        
 
         if (!filters.week_day || !filters.subject || !filters.time){
 
@@ -27,19 +28,20 @@ export default class ClassesController{
         }
 
         const timeInMinutes = convertHourToMinutes(time);
+
         const classes = await db('classes')
             .whereExists(function(){
                 this.select('class_schedule.*')
                     .from('class_schedule')
-                    .whereRaw('`classe_schedule`.`classes`.`id`')
-                    .whereRaw('`class_schedule`.`week_day`= ??',[week_day])
+                    .whereRaw('`class_schedule`.`class_id` = ´classes´.´id´')
+                    .whereRaw('`class_schedule`.`week_day`= ??',[Number(week_day)])
             })
+            
             .where('classes.subject','=',subject)
             .join('users', 'classes.user_id','=','users.id')
             .select(['classes.*','users.*']);
-        
-        
-        
+            console.log("=============")
+
         return response.status(200).json(classes);
 
 

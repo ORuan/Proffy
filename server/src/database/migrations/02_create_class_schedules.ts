@@ -7,10 +7,6 @@ export async function up(knex:Knex){
         table.integer('week_day').notNullable();
         table.integer('from').notNullable();
         table.integer('to').notNullable();
-
-
-
-
         table.integer('class_id')
         .notNullable()
         .references('id')
